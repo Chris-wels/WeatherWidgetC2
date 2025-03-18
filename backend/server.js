@@ -12,7 +12,9 @@ const port = process.env.PORT || 5503;  // Use Render's port in production, defa
 // app.use(cors({
 
 // })); // Allow frontend to access backend
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Public', 'WeatherAPI2.html'));
+});
 // Serve static files from the 'public' folder
 //app.use(express.static(path.join(__dirname, 'Public')));
 app.use(express.static(path.resolve(__dirname, 'Public')));
