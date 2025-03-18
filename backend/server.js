@@ -14,7 +14,8 @@ const port = process.env.PORT || 5503;  // Use Render's port in production, defa
 // })); // Allow frontend to access backend
 
 // Serve static files from the 'public' folder
-app.use(express.static(path.join(__dirname, 'Public')));
+//app.use(express.static(path.join(__dirname, 'Public')));
+app.use(express.static(path.resolve(__dirname, 'Public')));
 
 // Weather API route
 app.get('/api/weather', async (req, res) => {
