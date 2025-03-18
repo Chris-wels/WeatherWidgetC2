@@ -1,16 +1,17 @@
 
 const path = require('path');
 const express = require('express');
-const cors = require('cors');
+//const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
-const port = 5503;
+const port = process.env.PORT || 5503;  // Use Render's port in production, default to 5503 locally
 
-app.use(cors({
 
-})); // Allow frontend to access backend
+// app.use(cors({
+
+// })); // Allow frontend to access backend
 
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'Public')));
