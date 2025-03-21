@@ -1,143 +1,183 @@
- body {
-         font-family: Arial, sans-serif;
-        background:none;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         height: 100vh;
-         margin: 0;
-     }
- 
-         .widget {
-         background: white;
-         padding: 20px;
-         border-radius: 12px;
-         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-         width: 350px;
-         text-align: center;
-     }
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-         input, button {
-             padding: 12px;
-             border-radius: 8px;
-             font-size: 16px;
-         }
- 
-         input {
-             width: 80%;
-             border: 2px solid #007BFF;
-             outline: none;
-             text-align: center;
-             margin-right: 0;
-         }
- 
-         #edit-button {
-             width: 20%;
-             padding: 14px;
-             background: #28a745;
-             color: white;
-             border: none;
-             cursor: pointer;
-             margin-bottom: 0px;
-             margin-left: 0px;
-         }
- 
-         #edit-button:hover {
-             background: #218838;
-         }
- 
-         #fetch-button {
-             background: #007BFF;
-             color: white;
-             border: none;
-             cursor: pointer;
-             margin-top: 10px;
-             margin-bottom: 15px;
-             width: 100%;
-             border-radius: 10px;
-             padding: 10px;
-         }
- 
-         #fetch-button:hover {
-             background: #0056b3;
-         }
- 
-         button {
-             background: #28a745;
-             color: white;
-             border: none;
-             cursor: pointer;
-             width: 100%;
-             margin-top: 10px;
-         }
- 
-         button:hover {
-             background: #218838;
-         }
- 
-         #forecast-container {
-             display: flex;
-             overflow-x: auto;
-             margin-top: 15px;
-             padding: 10px 0;
-         }
- 
-         .forecast-day {
-             width: 80px;
-             padding: 10px;
-             background: #e3e3e3;
-             margin: 5px;
-             border-radius: 8px;
-             text-align: center;
-         }
- 
-         .forecast-day img {
-             width: 40px;
-         }
- 
-         #time-container {
-             margin-top: 15px;
+/* Fullscreen body */
+body {
+    font-family: Arial, sans-serif;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
 
-         }
- 
-         .time {
-             font-size: 28px;
-             font-weight: bold;
-             color: #333;
-             padding: 10px;
-             background-color: lightblue;
-             border-radius:10px ;
-         }
+/* Widget container (initial scale) */
+.widget-container {
+    width: 350px; /* Starting size */
+    height: 500px; /* Starting size */
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    transform: scale(0.8); /* Start with smaller scale */
+    transform-origin: top left;
+    transition: transform 0.3s ease;
+}
 
-         :hover.time{
-            background-color: rgb(102, 169, 223);
-           
-         }
- 
-         .date {
-             font-size: 16px;
-             color: #666;
-         }
- 
-         .error-message {
-             color: red;
-             font-size: 16px;
-             font-weight: bold;
-         }
- 
-         .input-container {
-             display: flex;
-             align-items: center;
-             margin-bottom: 10px;
-             justify-content: center;
-         }
- 
-         .input-container input {
-             border-radius: 12px 0 0 12px;
-             width: 80%;
-         }
- 
-         .input-container button {
-             border-radius: 0 12px 12px 0;
-             width: 20%;
-         } 
+/* Widget header */
+.widget-header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Input and Button Styles */
+input, button {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input {
+    width: 80%;
+    border: 2px solid #007BFF;
+    outline: none;
+    text-align: center;
+    margin-right: 0;
+}
+
+#edit-button {
+    width: 20%;
+    padding: 14px;
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 0;
+}
+
+#edit-button:hover {
+    background: #218838;
+}
+
+#fetch-button {
+    background: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#fetch-button:hover {
+    background: #0056b3;
+}
+
+/* Forecast container and day cards */
+#forecast-container {
+    display: flex;
+    overflow-x: auto;
+    margin-top: 15px;
+    padding: 10px 0;
+}
+
+.forecast-day {
+    width: 80px;
+    padding: 10px;
+    background: #e3e3e3;
+    margin: 5px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.forecast-day img {
+    width: 40px;
+}
+
+/* Time and Date */
+#time-container {
+    margin-top: 15px;
+}
+
+.time {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    padding: 10px;
+    background-color: lightblue;
+    border-radius: 10px;
+}
+
+.time:hover {
+    background-color: rgb(102, 169, 223);
+}
+
+.date {
+    font-size: 16px;
+    color: #666;
+}
+
+/* Error message */
+.error-message {
+    color: red;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Input container styling */
+.input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.input-container input {
+    border-radius: 12px 0 0 12px;
+    width: 80%;
+}
+
+.input-container button {
+    border-radius: 0 12px 12px 0;
+    width: 20%;
+}
+
+/* Resizer handle (for manual resizing) */
+.resizer {
+    width: 20px;
+    height: 20px;
+    background-color: #333;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+    border-radius: 50%;
+}
+
+/* Responsive Scaling */
+@media (max-width: 768px) {
+    .widget-container {
+        width: 250px;
+        height: 400px;
+        transform: scale(0.7); /* Smaller scale for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .widget-container {
+        width: 200px;
+        height: 300px;
+        transform: scale(0.6); /* Even smaller for very small screens */
+    }
+}
