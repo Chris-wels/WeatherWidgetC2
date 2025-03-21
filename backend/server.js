@@ -1,7 +1,7 @@
 
 const path = require('path');
 const express = require('express');
-//const cors = require('cors');
+const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 
@@ -9,9 +9,10 @@ const app = express();
 const port = process.env.PORT || 5503;  // Use Render's port in production, default to 5503 locally
 
 
-// app.use(cors({
+app.use(cors({
 
-// })); // Allow frontend to access backend
+})); // Allow frontend to access backend
+
 app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'Public', 'weatherAPI2.html'));
 });

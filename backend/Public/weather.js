@@ -2,13 +2,83 @@
      let timer;
      const cacheDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
      const maxCities = 5; // Limit of  cities
- 
+     
      window.onload = function() {
+        //const darkModeToggle = document.getElementById("dark-mode-toggle");
          const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
          const savedCity = localStorage.getItem("city");
          const cachedWeather = JSON.parse(localStorage.getItem("weatherData"));
          const cachedTimestamp = localStorage.getItem("weatherTimestamp");
- 
+        
+         document.addEventListener("DOMContentLoaded", () => {
+            const darkModeToggle = document.getElementById("dark-mode-toggle");
+        
+            if (!darkModeToggle) {
+                console.error("Dark mode button not found!");
+                return;
+            }
+        
+            function toggleDarkMode() {
+                document.body.classList.toggle("dark-mode");
+        
+                if (document.body.classList.contains("dark-mode")) {
+                    localStorage.setItem("darkMode", "enabled");
+                    darkModeToggle.innerHTML = "Light Mode";
+                } else {
+                    localStorage.removeItem("darkMode");
+                    darkModeToggle.innerHTML = "Dark Mode";
+                }
+            }
+        
+            darkModeToggle.addEventListener("click", toggleDarkMode);
+        
+            if (localStorage.getItem("darkMode") === "enabled") {
+                document.body.classList.add("dark-mode");
+                darkModeToggle.innerHTML = "Light Mode";
+            } else {
+                darkModeToggle.innerHTML = "Dark Mode";
+            }
+        });
+
+
+
+
+
+         document.addEventListener("DOMContentLoaded", () => {
+            const darkModeToggle = document.getElementById("dark-mode-toggle");
+        
+            if (!darkModeToggle) {
+                console.error("Dark mode button not found!");
+                return;
+            }
+        
+            // Function to toggle dark mode
+            function toggleDarkMode() {
+                document.body.classList.toggle("dark-mode");
+        
+                if (document.body.classList.contains("dark-mode")) {
+                    localStorage.setItem("darkMode", "enabled");
+                    darkModeToggle.innerHTML = "Light Mode";
+                } else {
+                    localStorage.removeItem("darkMode");
+                    darkModeToggle.innerHTML = "Dark Mode";
+                }
+            }
+        
+            darkModeToggle.addEventListener("click", toggleDarkMode);
+        
+            // Keep dark mode enabled on page reload
+            if (localStorage.getItem("darkMode") === "enabled") {
+                document.body.classList.add("dark-mode");
+                darkModeToggle.innerHTML = "Light Mode";
+            } else {
+                darkModeToggle.innerHTML = "Dark Mode";
+            }
+        });
+        // Load dark mode preference when the page loads
+        if (localStorage.getItem("darkMode") === "enabled") {
+            document.body.classList.add("dark-mode");
+        }
          console.log("🎉 Loaded weather widget!");
  
          if (savedCities.length > 0) {
@@ -135,3 +205,6 @@
      function hideError() {
          document.getElementById("error-container").textContent = "";
      }
+     
+   
+
