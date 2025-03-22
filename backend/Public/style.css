@@ -1,11 +1,3 @@
-/* Basic reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Fullscreen body */
 body {
     font-family: Arial, sans-serif;
     background: none;
@@ -16,38 +8,26 @@ body {
     margin: 0;
 }
 
-/* Widget container (initial scale) */
-.widget-container {
-    width: 350px; /* Starting size */
-    height: 500px; /* Starting size */
-    background-color: white;
+.widget {
+    background: white;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 80vw; /* Set width as a percentage of the viewport */
+    max-width: 350px; /* Maximum width of widget */
+    min-width: 250px; /* Minimum width of widget */
     text-align: center;
-    position: relative;
-    transform: scale(0.8); /* Start with smaller scale */
-    transform-origin: top left;
-    transition: transform 0.3s ease;
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
 }
 
-/* Widget header */
-.widget-header {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
-}
-
-/* Input and Button Styles */
 input, button {
     padding: 12px;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 1rem; /* Responsive font size */
+    width: 100%; /* Make buttons and inputs take up full width */
 }
 
 input {
-    width: 80%;
     border: 2px solid #007BFF;
     outline: none;
     text-align: center;
@@ -55,13 +35,13 @@ input {
 }
 
 #edit-button {
-    width: 20%;
+    width: 100%; /* Adjust to full width */
     padding: 14px;
     background: #28a745;
     color: white;
     border: none;
     cursor: pointer;
-    margin-left: 0;
+    margin-bottom: 0;
 }
 
 #edit-button:hover {
@@ -75,7 +55,6 @@ input {
     cursor: pointer;
     margin-top: 10px;
     margin-bottom: 15px;
-    width: 100%;
     border-radius: 10px;
     padding: 10px;
 }
@@ -84,34 +63,47 @@ input {
     background: #0056b3;
 }
 
-/* Forecast container and day cards */
+button {
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Full width button */
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #218838;
+}
+
 #forecast-container {
     display: flex;
     overflow-x: auto;
     margin-top: 15px;
     padding: 10px 0;
+    justify-content: center;
 }
 
 .forecast-day {
-    width: 80px;
+    width: 20vw; /* Flexible width, based on viewport width */
     padding: 10px;
     background: #e3e3e3;
     margin: 5px;
     border-radius: 8px;
     text-align: center;
+    flex-shrink: 0; /* Prevent shrinking */
 }
 
 .forecast-day img {
-    width: 40px;
+    width: 50%; /* Make images responsive */
 }
 
-/* Time and Date */
 #time-container {
     margin-top: 15px;
 }
 
 .time {
-    font-size: 28px;
+    font-size: 2rem; /* Make the time font responsive */
     font-weight: bold;
     color: #333;
     padding: 10px;
@@ -124,18 +116,16 @@ input {
 }
 
 .date {
-    font-size: 16px;
+    font-size: 1rem;
     color: #666;
 }
 
-/* Error message */
 .error-message {
     color: red;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
-/* Input container styling */
 .input-container {
     display: flex;
     align-items: center;
@@ -151,33 +141,4 @@ input {
 .input-container button {
     border-radius: 0 12px 12px 0;
     width: 20%;
-}
-
-/* Resizer handle (for manual resizing) */
-.resizer {
-    width: 20px;
-    height: 20px;
-    background-color: #333;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    cursor: se-resize;
-    border-radius: 50%;
-}
-
-/* Responsive Scaling */
-@media (max-width: 768px) {
-    .widget-container {
-        width: 250px;
-        height: 400px;
-        transform: scale(0.7); /* Smaller scale for smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    .widget-container {
-        width: 200px;
-        height: 300px;
-        transform: scale(0.6); /* Even smaller for very small screens */
-    }
 }
