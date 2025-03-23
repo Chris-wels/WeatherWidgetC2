@@ -1,38 +1,40 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Weather Widget</title>
-     <link rel="stylesheet" href="style.css">
-     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-     <script type="text/javascript" src="weather.js"></script>
- </head>
- <body style="background: transparent;">
- 
- <div class="widget">
-     <div class="input-container">
-         <input type="text" id="city-input" placeholder="Enter city" disabled>
-         <button id="edit-button" onclick="enableEdit()">Edit</button>
-     </div>
-     <button onclick="fetchWeatherByCity()" id="fetch-button">Get Weather</button>
-     <h3 id="city-name"></h3>
-     <p><strong>Temperature:</strong> <span id="temperature"></span>°C</p>
-     <p><strong>Condition:</strong> <span id="weather-condition"></span></p>
-     <img id="weather-icon" src="assets/weather.png"  width="64px" height="64px" alt="Weather Icon">
-     
-     <div id="time-container">
-         <p class="time" id="local-time">TIME</p>
-         <p class="date" id="local-date"></p>
-     </div>
- 
-     <div id="forecast-container"></div>
- 
-     <div id="error-container" class="error-message"></div>
- </div>
- 
- </body>
- </html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Widget</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="weather.js" defer></script>
+    <!-- <script type="text/javascript" src="darkmode.js" defer></script> -->
+</head>
+<body style="background: transparent;">
+
+<div class="widget">
+    <div class="input-container">
+        <input type="text" id="city-input" placeholder="Enter city" disabled>
+        <button id="edit-button" onclick="enableEdit()">Edit</button>
+    </div>
+    <button onclick="fetchWeatherByCity()" id="fetch-button">Get Weather</button>
+    <h3 id="city-name"></h3>
+    <p><strong>Temperature:</strong> <span id="temperature"></span>°C</p>
+    <p><strong>Condition:</strong> <span id="weather-condition"></span></p>
+    <img id="weather-icon" src="assets/weather.png" width="64px" height="64px" alt="Weather Icon">
+    
+    <div id="time-container">
+        <p class="time" id="local-time">TIME</p>
+        <p class="date" id="local-date"></p>
+    </div>
+
+    <div id="forecast-container"></div>
+
+    <div id="error-container" class="error-message"></div>
+
+</div>
+
+</body>
+</html>
 
 
 

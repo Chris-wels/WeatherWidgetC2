@@ -8,7 +8,9 @@
          const savedCity = localStorage.getItem("city");
          const cachedWeather = JSON.parse(localStorage.getItem("weatherData"));
          const cachedTimestamp = localStorage.getItem("weatherTimestamp");
- 
+        
+        
+        
          console.log("🎉 Loaded weather widget!");
  
          if (savedCities.length > 0) {
@@ -135,3 +137,49 @@
      function hideError() {
          document.getElementById("error-container").textContent = "";
      }
+     document.addEventListener("DOMContentLoaded", () => {
+        console.log("Script is running!"); // Debugging check
+    
+        const toggleButton = document.createElement("button");
+        toggleButton.id = "dark-mode-toggle";
+        toggleButton.textContent = "🌙";
+        toggleButton.style.position = "fixed";
+        toggleButton.style.bottom = "20px";
+        toggleButton.style.right = "20px";
+        toggleButton.style.width = "40px";
+        toggleButton.style.height = "40px";
+        toggleButton.style.borderRadius = "50%";
+        toggleButton.style.background = "black";
+        toggleButton.style.color = "white";
+        toggleButton.style.border = "none";
+        toggleButton.style.cursor = "pointer";
+        toggleButton.style.display = "flex";
+        toggleButton.style.alignItems = "center";
+        toggleButton.style.justifyContent = "center";
+        toggleButton.style.fontSize = "18px";
+        toggleButton.style.transition = "background 0.3s, color 0.3s";
+    
+        document.body.appendChild(toggleButton);
+    
+        const widget = document.querySelector(".widget");
+    
+        if (!widget) {
+            console.error("Widget not found!");
+            return;
+        }
+    
+        // Load dark mode state
+        if (localStorage.getItem("darkMode") === "enabled") {
+            widget.classList.add("dark-mode");
+        }
+    
+        toggleButton.addEventListener("click", () => {
+            widget.classList.toggle("dark-mode");
+    
+            if (widget.classList.contains("dark-mode")) {
+                localStorage.setItem("darkMode", "enabled");
+            } else {
+                localStorage.setItem("darkMode", "disabled");
+            }
+        });
+    });
