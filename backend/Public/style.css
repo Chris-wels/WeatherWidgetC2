@@ -84,8 +84,8 @@
          }
  
          .forecast-day {
-             width: 80px;
-             padding: 10px;
+             width: 500px;
+             padding: 40px;
              background: #e3e3e3;
              margin: 5px;
              border-radius: 8px;
