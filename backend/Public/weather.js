@@ -129,8 +129,9 @@ function showError(message) {
 function hideError() {
     document.getElementById("error-container").textContent = "";
 }
+
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Script is running!"); // Debugging check
+    console.log("Script is running!");
 
     const toggleButton = document.createElement("button");
     toggleButton.id = "dark-mode-toggle";
@@ -149,7 +150,8 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleButton.style.alignItems = "center";
     toggleButton.style.justifyContent = "center";
     toggleButton.style.fontSize = "18px";
-    toggleButton.style.transition = "background 0.3s, color 0.3s";
+    toggleButton.style.transition = "opacity 0.3s ease-in-out";
+    toggleButton.style.opacity = "0"; // Start hidden
 
     document.body.appendChild(toggleButton);
 
@@ -160,7 +162,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Load dark mode state
     if (localStorage.getItem("darkMode") === "enabled") {
         widget.classList.add("dark-mode");
     }
@@ -174,4 +175,71 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("darkMode", "disabled");
         }
     });
+
+    // Handle cursor proximity
+    document.addEventListener("mousemove", (event) => {
+        const buttonRect = toggleButton.getBoundingClientRect();
+        const cursorX = event.clientX;
+        const cursorY = event.clientY;
+
+        const distance = Math.sqrt(
+            Math.pow(cursorX - (buttonRect.left + buttonRect.width / 2), 2) +
+            Math.pow(cursorY - (buttonRect.top + buttonRect.height / 2), 2)
+        );
+
+        // Show button if cursor is within 100px, hide otherwise
+        if (distance < 100) {
+            toggleButton.style.opacity = "1";
+        } else {
+            toggleButton.style.opacity = "0";
+        }
+    });
 });
+
+
+// document.addEventListener("DOMContentLoaded", () => {
+//     console.log("Script is running!"); // Debugging check
+
+//     const toggleButton = document.createElement("button");
+//     toggleButton.id = "dark-mode-toggle";
+//     toggleButton.textContent = "🌙";
+//     toggleButton.style.position = "fixed";
+//     toggleButton.style.bottom = "20px";
+//     toggleButton.style.right = "20px";
+//     toggleButton.style.width = "40px";
+//     toggleButton.style.height = "40px";
+//     toggleButton.style.borderRadius = "50%";
+//     toggleButton.style.background = "black";
+//     toggleButton.style.color = "white";
+//     toggleButton.style.border = "none";
+//     toggleButton.style.cursor = "pointer";
+//     toggleButton.style.display = "flex";
+//     toggleButton.style.alignItems = "center";
+//     toggleButton.style.justifyContent = "center";
+//     toggleButton.style.fontSize = "18px";
+//     toggleButton.style.transition = "background 0.3s, color 0.3s";
+
+//     document.body.appendChild(toggleButton);
+
+//     const widget = document.querySelector(".widget");
+
+//     if (!widget) {
+//         console.error("Widget not found!");
+//         return;
+//     }
+
+//     // Load dark mode state
+//     if (localStorage.getItem("darkMode") === "enabled") {
+//         widget.classList.add("dark-mode");
+//     }
+
+//     toggleButton.addEventListener("click", () => {
+//         widget.classList.toggle("dark-mode");
+
+//         if (widget.classList.contains("dark-mode")) {
+//             localStorage.setItem("darkMode", "enabled");
+//         } else {
+//             localStorage.setItem("darkMode", "disabled");
+//         }
+//     });
+// });
