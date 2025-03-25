@@ -180,3 +180,10 @@
     color: white;
     border: 1px solid white;
 }
+
+:hover#temp-unit {
+    background-color: aquamarine;
+    border-radius: 5px;
+    /* font-size: large; */
+    padding: 2px;
+}

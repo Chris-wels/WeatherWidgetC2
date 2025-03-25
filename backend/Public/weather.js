@@ -81,10 +81,33 @@ function fetchWeatherByCity(isReload = false) {
             console.error("❌ Weather fetch error:", error);
         });
 }
+//Use this For Single Temperature Conversion 
+// function updateWeatherUI(data) {
+//     document.getElementById("city-name").textContent = data.address;
+//     document.getElementById("temperature").textContent = data.currentConditions.temp;
+//     document.getElementById("weather-condition").textContent = data.currentConditions.conditions;
+//     document.getElementById("weather-icon").src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/1st%20Set%20-%20Color/${data.currentConditions.icon}.png`;
+
+//     if (timer) clearInterval(timer);
+//     updateRealTime(data.timezone);
+//     timer = setInterval(() => updateRealTime(data.timezone), 1000);
+//     updateForecastUI(data.days);
+//     document.getElementById("city-input").disabled = true;
+// }
 
 function updateWeatherUI(data) {
+    const tempElement = document.getElementById("temperature");
+    const tempUnit = document.getElementById("temp-unit");
+
+    let fahrenheit = data.currentConditions.temp;
+    let celsius = ((fahrenheit - 32) * 5) / 9;
+
+    let isCelsius = localStorage.getItem("isCelsius") === "true";
+
+    tempElement.textContent = isCelsius ? celsius.toFixed(1) : fahrenheit.toFixed(1);
+    tempUnit.textContent = isCelsius ? "°C" : "°F";
+
     document.getElementById("city-name").textContent = data.address;
-    document.getElementById("temperature").textContent = data.currentConditions.temp;
     document.getElementById("weather-condition").textContent = data.currentConditions.conditions;
     document.getElementById("weather-icon").src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/1st%20Set%20-%20Color/${data.currentConditions.icon}.png`;
 
@@ -92,8 +115,12 @@ function updateWeatherUI(data) {
     updateRealTime(data.timezone);
     timer = setInterval(() => updateRealTime(data.timezone), 1000);
     updateForecastUI(data.days);
+
     document.getElementById("city-input").disabled = true;
 }
+
+
+
 
 function updateRealTime(timezone) {
     let now = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
@@ -195,6 +222,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+//Converts Farenheit to Celcius Vice Versa
+document.getElementById("temp-unit").addEventListener("click", () => {
+    let tempElement = document.getElementById("temperature");
+    let tempUnit = document.getElementById("temp-unit");
+
+    let currentTemp = parseFloat(tempElement.textContent);
+    let isCelsius = localStorage.getItem("isCelsius") === "true";
+
+    if (isCelsius) {
+        // Convert to Fahrenheit
+        tempElement.textContent = ((currentTemp * 9) / 5 + 32).toFixed(1);
+        tempUnit.textContent = "°F";
+        localStorage.setItem("isCelsius", "false");
+    } else {
+        // Convert to Celsius
+        tempElement.textContent = ((currentTemp - 32) * 5 / 9).toFixed(1);
+        tempUnit.textContent = "°C";
+        localStorage.setItem("isCelsius", "true");
+    }
+});
+
 
 
 // document.addEventListener("DOMContentLoaded", () => {
