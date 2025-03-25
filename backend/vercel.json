@@ -3,8 +3,7 @@
     "builds": [
       {
         "src": "backend/server.js",
-        "use": "@vercel/node",
-        "regions": ["syd1"]  
+        "use": "@vercel/node"
       }
     ],
     "routes": [
