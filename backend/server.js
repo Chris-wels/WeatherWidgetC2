@@ -9,7 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 5503;
 
 // Log the API key to check if it's being read correctly
-const apiKey = process.env.WEATHER_API_KEY;
+const apiKey = process.env.VISUAL_API_KEY;
 console.log("API Key:", apiKey);  // Should log your actual API key
 
 // Serve static files from the "public" directory
