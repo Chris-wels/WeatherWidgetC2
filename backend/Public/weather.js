@@ -100,6 +100,7 @@
          document.getElementById("city-input").disabled = true;
      }
  
+     
      function updateRealTime(timezone) {
          let now = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
          document.getElementById("local-time").textContent = now.toLocaleTimeString("en-US", { hour: 'numeric', minute: 'numeric', second:'numeric', hour12: true });
@@ -182,4 +183,24 @@
                 localStorage.setItem("darkMode", "disabled");
             }
         });
+        document.addEventListener("mousemove", (event) => {
+            const buttonRect = toggleButton.getBoundingClientRect();
+            const cursorX = event.clientX;
+            const cursorY = event.clientY;
+    
+            const distance = Math.sqrt(
+                Math.pow(cursorX - (buttonRect.left + buttonRect.width / 2), 2) +
+                Math.pow(cursorY - (buttonRect.top + buttonRect.height / 2), 2)
+            );
+    
+            // Show button if cursor is within 100px, hide otherwise
+            if (distance < 100) {
+                toggleButton.style.opacity = "1";
+            } else {
+                toggleButton.style.opacity = "0";
+            }
+        });
     });
+
+    
+

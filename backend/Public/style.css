@@ -174,7 +174,8 @@
 
 /* Make text readable inside the dark mode widget */
 .dark-mode input,
-.dark-mode button {
+.dark-mode button,
+.dark-mode .forecast-day {
     background: #333;
     color: white;
     border: 1px solid white;
