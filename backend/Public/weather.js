@@ -107,7 +107,8 @@ function updateWeatherUI(data) {
     tempElement.textContent = isCelsius ? celsius.toFixed(1) : fahrenheit.toFixed(1);
     tempUnit.textContent = isCelsius ? "°C" : "°F";
 
-    document.getElementById("city-name").textContent = data.address;
+    document.getElementById("city-name").textContent = formatCityName(data.address);
+   // document.getElementById("city-name").textContent = data.address;
     document.getElementById("weather-condition").textContent = data.currentConditions.conditions;
     document.getElementById("weather-icon").src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/1st%20Set%20-%20Color/${data.currentConditions.icon}.png`;
 
@@ -119,6 +120,9 @@ function updateWeatherUI(data) {
     document.getElementById("city-input").disabled = true;
 }
 
+function formatCityName(city) {
+    return city.replace(/\b\w/g, (char) => char.toUpperCase());
+}
 
 
 
