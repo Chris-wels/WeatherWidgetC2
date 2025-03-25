@@ -13,7 +13,7 @@ const apiKey = process.env.VISUAL_API_KEY;
 console.log("API Key:", apiKey);  // Should log your actual API key
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.resolve(__dirname, "Public")));
 
 // API endpoint to fetch weather data based on city
 app.get("/api/weather", async (req, res) => {
@@ -46,7 +46,7 @@ app.get("/api/weather", async (req, res) => {
 
 // Serve the main HTML file for the frontend
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "weatherAPI2.html"));
+  res.sendFile(path.resolve(__dirname, "Public", "weatherAPI2.html"));
 });
 
 // Start the server
