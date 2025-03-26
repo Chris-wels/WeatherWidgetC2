@@ -2,19 +2,18 @@
   "version": 2,
   "builds": [
     {
-      "source": "backend/server.js",
+      "src": "backend/server.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "source": "/api/weather",
-      "destination": "backend/server.js"
+      "src": "/api/weather",
+      "dest": "backend/server.js"
     },
     {
-      "source": "/(.*)",
-      "destination": "/public/index.html"
+      "src": "/(.*)",
+      "dest": "/public/index.html"
     }
   ]
 }
-
