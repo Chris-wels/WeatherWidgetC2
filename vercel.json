@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "regions": ["au1"],
   "builds": [
     {
       "src": "backend/server.js",
@@ -10,10 +11,6 @@
     {
       "src": "/api/weather",
       "dest": "backend/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/index.html"
     }
   ]
 }
