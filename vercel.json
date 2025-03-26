@@ -4,16 +4,20 @@
     {
       "src": "backend/server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "Public/*",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/api/weather",
-      "dest": "backend/server.js"
+      "dest": "/backend/server.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/public/index.html"
+      "dest": "/Public/$1"
     }
   ]
 }
