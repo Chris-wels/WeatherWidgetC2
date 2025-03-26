@@ -118,7 +118,7 @@
          .date {
              font-size: 18px;
              color: black;
-         }
+            }
  
          .error-message {
              color: red;
@@ -175,7 +175,7 @@
 /* Make text readable inside the dark mode widget */
 .dark-mode input,
 .dark-mode button,
-.dark-mode .forecast-day
+.dark-mode .forecast-day,
 .dark-mode .date {
     background: #333;
     color: white;
