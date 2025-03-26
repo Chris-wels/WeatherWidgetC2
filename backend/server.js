@@ -1,7 +1,6 @@
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
-const serverless = require('serverless-http');  // Import serverless-http
 
 const app = express();
 
@@ -21,9 +20,8 @@ app.get('/api/weather', async (req, res) => {
     }
 });
 
-// Wrap the Express app with serverless-http
-module.exports = serverless(app);
-
+// Export app for Vercel
+module.exports = app;
 
 
 
