@@ -1,16 +1,12 @@
-//Use for serveless vercel deployment
-const path = require('path');
 const express = require('express');
 const axios = require('axios');
 require('dotenv').config();
 
 const app = express();
 
-// Serve static files from the 'public' folder
-app.use(express.static(path.resolve(__dirname, 'Public')));
-
 // Weather API route
 app.get('/api/weather', async (req, res) => {
+    console.log("Weather API hit");
     const city = req.query.city;
     if (!city) return res.status(400).json({ error: 'City is required' });
 
@@ -24,8 +20,9 @@ app.get('/api/weather', async (req, res) => {
     }
 });
 
-// Return the app as a serverless function
+// Export app for Vercel
 module.exports = app;
+
 
 
 
