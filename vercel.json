@@ -10,11 +10,11 @@
   "routes": [
     {
       "src": "/api/weather",
-      "dest": "/backend/server"
+      "dest": "backend/server"
     },
     {
       "src": "/(.*)",
-      "dest": "/backend/server"
+      "dest": "backend/server"
     }
   ]
 }
