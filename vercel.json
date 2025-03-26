@@ -1,21 +1,20 @@
 {
-    "version": 2,
-    "regions": ["au1"], 
-    "builds": [
-      {
-        "src": "backend/server.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/api/weather",
-        "dest": "/backend/server.js"  
-      },
-      {
-        "src": "/(.*)",
-        "dest": "/backend/server.js"  
-      }
-    ]
-  }
-  
+  "version": 2,
+  "regions": ["au1"], 
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/weather",
+      "dest": "/backend/server"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/backend/server"
+    }
+  ]
+}
