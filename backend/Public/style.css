@@ -116,7 +116,7 @@
          }
  
          .date {
-             font-size: 25px;
+             font-size: 18px;
              color: black;
          }
  
@@ -176,8 +176,8 @@
 .dark-mode input,
 .dark-mode button,
 .dark-mode .forecast-day
-.dark-mode p {
+.dark-mode .date {
     background: #333;
     color: white;
-    border: 1px solid white;
+    border: 1px solid
 }
