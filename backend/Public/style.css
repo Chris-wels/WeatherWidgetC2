@@ -169,7 +169,6 @@
 .dark-mode {
     background: black !important;
     color: white !important;
-    border: 1px solid;
 }
 
 /* Make text readable inside the dark mode widget */
@@ -179,5 +178,5 @@
 .dark-mode .date {
     background: #333;
     color: white;
-    border: 1px solid
+
 }
