@@ -167,7 +167,7 @@
 
 /* Dark mode for the widget */
 .dark-mode {
-    background: black !important;
+    background: #191919 !important;
     color: white !important;
 }
 
@@ -176,7 +176,7 @@
 .dark-mode button,
 .dark-mode .forecast-day,
 .dark-mode .date {
-    background: #333;
+    background: #191919;
     color: white;
 
 }
