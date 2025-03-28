@@ -1,146 +1,348 @@
 
-     let timer;
-     const cacheDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-     const maxCities = 5; // Limit of  cities
+    //  let timer;
+    //  const cacheDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+    //  const maxCities = 5; // Limit of  cities
  
-     window.onload = function() {
-         const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
-         const savedCity = localStorage.getItem("city");
-         const cachedWeather = JSON.parse(localStorage.getItem("weatherData"));
-         const cachedTimestamp = localStorage.getItem("weatherTimestamp");
+    //  window.onload = function() {
+    //      const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+    //      const savedCity = localStorage.getItem("city");
+    //      const cachedWeather = JSON.parse(localStorage.getItem("weatherData"));
+    //      const cachedTimestamp = localStorage.getItem("weatherTimestamp");
         
         
         
-         console.log("🎉 Loaded weather widget!");
+    //      console.log("🎉 Loaded weather widget!");
  
-         if (savedCities.length > 0) {
-             console.log(`📍 Cached cities: ${savedCities.join(", ")}`);
-         }
+    //      if (savedCities.length > 0) {
+    //          console.log(`📍 Cached cities: ${savedCities.join(", ")}`);
+    //      }
  
-         if (savedCity) {
-             document.getElementById("city-input").value = savedCity.toLowerCase();  // Normalize the city input
-             if (cachedWeather && cachedTimestamp && (Date.now() - cachedTimestamp) < cacheDuration) {
-                 console.log("🔄 Using cached weather data...");
-                 updateWeatherUI(cachedWeather);
-             } else {
-                 console.log("🔄 Fetching new weather data...");
-                 fetchWeatherByCity(true);
-             }
-         }
-     };
+    //      if (savedCity) {
+    //          document.getElementById("city-input").value = savedCity.toLowerCase();  // Normalize the city input
+    //          if (cachedWeather && cachedTimestamp && (Date.now() - cachedTimestamp) < cacheDuration) {
+    //              console.log("🔄 Using cached weather data...");
+    //              updateWeatherUI(cachedWeather);
+    //          } else {
+    //              console.log("🔄 Fetching new weather data...");
+    //              fetchWeatherByCity(true);
+    //          }
+    //      }
+    //  };
  
-     function fetchWeatherByCity(isReload = false) {
-         let city = document.getElementById("city-input").value.trim().toLowerCase();  // Normalize city input for consistency
-         if (!city) {
-             showError("❌ Please enter a city.");
-             console.log("❌ Error: City input is empty.");
-             return;
-         }
+    //  function fetchWeatherByCity(isReload = false) {
+    //      let city = document.getElementById("city-input").value.trim().toLowerCase();  // Normalize city input for consistency
+    //      if (!city) {
+    //          showError("❌ Please enter a city.");
+    //          console.log("❌ Error: City input is empty.");
+    //          return;
+    //      }
  
-         console.log(`🌍 Fetching weather data for city: ${city}`);
+    //      console.log(`🌍 Fetching weather data for city: ${city}`);
  
-         localStorage.setItem("city", city);
+    //      localStorage.setItem("city", city);
  
-     //  fetch(`http://localhost:5503/api/weather?city=${city}`)
-      fetch(`/api/weather?city=${city}`)
+    //  //  fetch(`http://localhost:5503/api/weather?city=${city}`)
+    //   fetch(`/api/weather?city=${city}`)
    
 
-             .then(response => {
-                 if (!response.ok) {
-                     console.log(`❌ Error response: ${response.status} ${response.statusText}`);
-                     throw new Error("City not found or API request failed.");
-                 }
-                 return response.json();
-             })
-             .then(data => {
-                 if (data.error) {
-                     showError("❌ City not found. Please check the city name.");
-                     console.log("❌ API error:", data.error.message);
-                     return;
-                 }
+    //          .then(response => {
+    //              if (!response.ok) {
+    //                  console.log(`❌ Error response: ${response.status} ${response.statusText}`);
+    //                  throw new Error("City not found or API request failed.");
+    //              }
+    //              return response.json();
+    //          })
+    //          .then(data => {
+    //              if (data.error) {
+    //                  showError("❌ City not found. Please check the city name.");
+    //                  console.log("❌ API error:", data.error.message);
+    //                  return;
+    //              }
  
-                 // Normalize city name for cache comparison
-                 let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
-                 let normalizedCity = city.toLowerCase();
+    //              // Normalize city name for cache comparison
+    //              let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+    //              let normalizedCity = city.toLowerCase();
  
-                 if (!savedCities.includes(normalizedCity)) {
-                     if (savedCities.length >= maxCities) {
-                         savedCities.shift(); // Remove the oldest city if more than 3 cities
-                         console.log("⚡ Removed oldest city to make space.");
-                     }
-                     savedCities.push(normalizedCity);
-                     localStorage.setItem("cities", JSON.stringify(savedCities));
-                     console.log(`✅ Cached city: ${city}`);
-                 } else {
-                     console.log(`🔁 Using cached weather data for city: ${city}`);
-                 }
+    //              if (!savedCities.includes(normalizedCity)) {
+    //                  if (savedCities.length >= maxCities) {
+    //                      savedCities.shift(); // Remove the oldest city if more than 3 cities
+    //                      console.log("⚡ Removed oldest city to make space.");
+    //                  }
+    //                  savedCities.push(normalizedCity);
+    //                  localStorage.setItem("cities", JSON.stringify(savedCities));
+    //                  console.log(`✅ Cached city: ${city}`);
+    //              } else {
+    //                  console.log(`🔁 Using cached weather data for city: ${city}`);
+    //              }
  
-                 localStorage.setItem("weatherData", JSON.stringify(data));
-                 localStorage.setItem("weatherTimestamp", Date.now());
-                 updateWeatherUI(data);
-                 hideError();
-                 console.log("✅ Weather data fetched successfully:", data);
-             })
-             .catch(error => {
-                 showError("❌ Could not find location.");
-                 console.error("❌ Weather fetch error:", error);
-             });
-     }
+    //              localStorage.setItem("weatherData", JSON.stringify(data));
+    //              localStorage.setItem("weatherTimestamp", Date.now());
+    //              updateWeatherUI(data);
+    //              hideError();
+    //              console.log("✅ Weather data fetched successfully:", data);
+    //          })
+    //          .catch(error => {
+    //              showError("❌ Could not find location.");
+    //              console.error("❌ Weather fetch error:", error);
+    //          });
+    //  }
  
-     function updateWeatherUI(data) {
-         document.getElementById("city-name").textContent = data.location.name;
-         document.getElementById("temperature").textContent = data.current.temp_c;
-         document.getElementById("weather-condition").textContent = data.current.condition.text;
-         document.getElementById("weather-icon").src = `https:${data.current.condition.icon}`;
+    //  function updateWeatherUI(data) {
+    //      document.getElementById("city-name").textContent = data.location.name;
+    //      document.getElementById("temperature").textContent = data.current.temp_c;
+    //      document.getElementById("weather-condition").textContent = data.current.condition.text;
+    //      document.getElementById("weather-icon").src = `https:${data.current.condition.icon}`;
  
-         if (timer) clearInterval(timer);
-         updateRealTime(data.location.tz_id);
-         timer = setInterval(() => updateRealTime(data.location.tz_id), 1000); 
-         updateForecastUI(data.forecast.forecastday);
-         document.getElementById("city-input").disabled = true;
-     }
+    //      if (timer) clearInterval(timer);
+    //      updateRealTime(data.location.tz_id);
+    //      timer = setInterval(() => updateRealTime(data.location.tz_id), 1000); 
+    //      updateForecastUI(data.forecast.forecastday);
+    //      document.getElementById("city-input").disabled = true;
+    //  }
  
      
-     function updateRealTime(timezone) {
-         let now = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
-         document.getElementById("local-time").textContent = now.toLocaleTimeString("en-US", { hour: 'numeric', minute: 'numeric', second:'numeric', hour12: true });
-         document.getElementById("local-date").textContent = now.toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-     }
+    //  function updateRealTime(timezone) {
+    //      let now = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
+    //      document.getElementById("local-time").textContent = now.toLocaleTimeString("en-US", { hour: 'numeric', minute: 'numeric', second:'numeric', hour12: true });
+    //      document.getElementById("local-date").textContent = now.toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    //  }
  
-     function updateForecastUI(forecast) {
-         const forecastContainer = document.getElementById("forecast-container");
-         forecastContainer.innerHTML = "";
-         let today = new Date().getDate();
-         forecast.forEach(day => {
-             let forecastDate = new Date(day.date).getDate();
-             if (forecastDate >= today) {
-                 let div = document.createElement("div");
-                 div.className = "forecast-day";
-                 div.innerHTML = `
-                     <p>${new Date(day.date).toLocaleDateString("en-US", { weekday: 'short' })}</p>
-                     <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
-                     <p>${day.day.avgtemp_c}°C</p>
-                 `;
-                 forecastContainer.appendChild(div);
-             }
-         });
-     }
+    //  function updateForecastUI(forecast) {
+    //      const forecastContainer = document.getElementById("forecast-container");
+    //      forecastContainer.innerHTML = "";
+    //      let today = new Date().getDate();
+    //      forecast.forEach(day => {
+    //          let forecastDate = new Date(day.date).getDate();
+    //          if (forecastDate >= today) {
+    //              let div = document.createElement("div");
+    //              div.className = "forecast-day";
+    //              div.innerHTML = `
+    //                  <p>${new Date(day.date).toLocaleDateString("en-US", { weekday: 'short' })}</p>
+    //                  <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
+    //                  <p>${day.day.avgtemp_c}°C</p>
+    //              `;
+    //              forecastContainer.appendChild(div);
+    //          }
+    //      });
+    //  }
  
-     function enableEdit() {
-         document.getElementById("city-input").disabled = false;
-         hideError();
-     }
+    //  function enableEdit() {
+    //      document.getElementById("city-input").disabled = false;
+    //      hideError();
+    //  }
  
-     function showError(message) {
-         document.getElementById("error-container").textContent = message;
-     }
+    //  function showError(message) {
+    //      document.getElementById("error-container").textContent = message;
+    //  }
  
-     function hideError() {
-         document.getElementById("error-container").textContent = "";
-     }
-     document.addEventListener("DOMContentLoaded", () => {
+    //  function hideError() {
+    //      document.getElementById("error-container").textContent = "";
+    //  }
+    //  document.addEventListener("DOMContentLoaded", () => {
+    //     console.log("Script is running!"); // Debugging check
+    
+    //     const toggleButton = document.createElement("button");
+    //     toggleButton.id = "dark-mode-toggle";
+    //     toggleButton.textContent = "🌙";
+    //     toggleButton.style.position = "fixed";
+    //     toggleButton.style.bottom = "20px";
+    //     toggleButton.style.right = "20px";
+    //     toggleButton.style.width = "40px";
+    //     toggleButton.style.height = "40px";
+    //     toggleButton.style.borderRadius = "50%";
+    //     toggleButton.style.background = "black";
+    //     toggleButton.style.color = "white";
+    //     toggleButton.style.border = "none";
+    //     toggleButton.style.cursor = "pointer";
+    //     toggleButton.style.display = "flex";
+    //     toggleButton.style.alignItems = "center";
+    //     toggleButton.style.justifyContent = "center";
+    //     toggleButton.style.fontSize = "18px";
+    //     toggleButton.style.transition = "background 0.3s, color 0.3s";
+    
+    //     document.body.appendChild(toggleButton);
+    
+    //     const widget = document.querySelector(".widget");
+    
+    //     if (!widget) {
+    //         console.error("Widget not found!");
+    //         return;
+    //     }
+    
+    //     // Load dark mode state
+    //     if (localStorage.getItem("darkMode") === "enabled") {
+    //         widget.classList.add("dark-mode");
+    //     }
+    
+    //     toggleButton.addEventListener("click", () => {
+    //         widget.classList.toggle("dark-mode");
+    
+    //         if (widget.classList.contains("dark-mode")) {
+    //             localStorage.setItem("darkMode", "enabled");
+    //         } else {
+    //             localStorage.setItem("darkMode", "disabled");
+    //         }
+    //     });
+    //     document.addEventListener("mousemove", (event) => {
+    //         const buttonRect = toggleButton.getBoundingClientRect();
+    //         const cursorX = event.clientX;
+    //         const cursorY = event.clientY;
+    
+    //         const distance = Math.sqrt(
+    //             Math.pow(cursorX - (buttonRect.left + buttonRect.width / 2), 2) +
+    //             Math.pow(cursorY - (buttonRect.top + buttonRect.height / 2), 2)
+    //         );
+    
+    //         // Show button if cursor is within 100px, hide otherwise
+    //         if (distance < 100) {
+    //             toggleButton.style.opacity = "1";
+    //         } else {
+    //             toggleButton.style.opacity = "0";
+    //         }
+    //     });
+    // });
+
+    
+
+    let timer;
+    const cacheDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+    const maxCities = 5; // Limit of cities
+    
+    window.onload = function() {
+        const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+        const savedCity = localStorage.getItem("city");
+        const cachedWeather = JSON.parse(localStorage.getItem("weatherData"));
+        const cachedTimestamp = localStorage.getItem("weatherTimestamp");
+    
+        console.log("🎉 Loaded weather widget!");
+        if (savedCities.length > 0) console.log(`📍 Cached cities: ${savedCities.join(", ")}`);
+    
+        if (savedCity) {
+            document.getElementById("city-input").value = savedCity.toLowerCase();
+            if (cachedWeather && cachedTimestamp && (Date.now() - cachedTimestamp) < cacheDuration) {
+                console.log("🔄 Using cached weather data...");
+                updateWeatherUI(cachedWeather);
+            } else {
+                console.log("🔄 Fetching new weather data...");
+                fetchWeatherByCity();
+            }
+        }
+    };
+    
+    function fetchWeatherByCity(isReload = false) {
+        let city = document.getElementById("city-input").value.trim().toLowerCase();
+        if (!city) return showError("❌ Please enter a city.");
+    
+        console.log(`🌍 Fetching weather data for city: ${city}`);
+        localStorage.setItem("city", city);
+    
+        fetch(`/api/weather?city=${city}`)
+            .then(response => {
+                if (!response.ok) throw new Error("City not found or API request failed.");
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) return showError("❌ City not found. Please check the city name.");
+    
+                cacheCity(city);
+                localStorage.setItem("weatherData", JSON.stringify(data));
+                localStorage.setItem("weatherTimestamp", Date.now());
+                updateWeatherUI(data);
+                hideError();
+                console.log("✅ Weather data fetched successfully:", data);
+            })
+            .catch(error => {
+                showError("❌ Could not find location.");
+                console.error("❌ Weather fetch error:", error);
+            });
+    }
+    
+    function cacheCity(city) {
+        let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
+        let normalizedCity = city.toLowerCase();
+        if (!savedCities.includes(normalizedCity)) {
+            if (savedCities.length >= maxCities) savedCities.shift();
+            savedCities.push(normalizedCity);
+            localStorage.setItem("cities", JSON.stringify(savedCities));
+            console.log(`✅ Cached city: ${city}`);
+        } else {
+            console.log(`🔁 Using cached weather data for city: ${city}`);
+        }
+    }
+    
+    function updateWeatherUI(data) {
+        document.getElementById("city-name").textContent = data.location.name;
+        document.getElementById("temperature").textContent = data.current.temp_c;
+        document.getElementById("weather-condition").textContent = data.current.condition.text;
+        document.getElementById("weather-icon").src = `https:${data.current.condition.icon}`;
+    
+        if (timer) clearInterval(timer);
+        updateRealTime(data.location.tz_id);
+        timer = setInterval(() => updateRealTime(data.location.tz_id), 1000);
+        updateForecastUI(data.forecast.forecastday);
+        document.getElementById("city-input").disabled = true;
+    }
+    
+    function updateRealTime(timezone) {
+        let now = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
+        document.getElementById("local-time").textContent = now.toLocaleTimeString("en-US", { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+        document.getElementById("local-date").textContent = now.toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+    }
+    
+    function updateForecastUI(forecast) {
+        const forecastContainer = document.getElementById("forecast-container");
+        forecastContainer.innerHTML = "";
+        let today = new Date().getDate();
+        forecast.forEach(day => {
+            let forecastDate = new Date(day.date).getDate();
+            if (forecastDate >= today) {
+                let div = document.createElement("div");
+                div.className = "forecast-day";
+                div.innerHTML = `
+                    <p>${new Date(day.date).toLocaleDateString("en-US", { weekday: 'short' })}</p>
+                    <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
+                    <p>${day.day.avgtemp_c}°C</p>
+                `;
+                forecastContainer.appendChild(div);
+            }
+        });
+    }
+    
+    function enableEdit() {
+        document.getElementById("city-input").disabled = false;
+        hideError();
+    }
+    
+    function showError(message) {
+        document.getElementById("error-container").textContent = message;
+    }
+    
+    function hideError() {
+        document.getElementById("error-container").textContent = "";
+    }
+    
+    document.addEventListener("DOMContentLoaded", () => {
         console.log("Script is running!"); // Debugging check
     
+        const toggleButton = createDarkModeToggle();
+        document.body.appendChild(toggleButton);
+    
+        const widget = document.querySelector(".widget");
+        if (!widget) {
+            console.error("Widget not found!");
+            return;
+        }
+    
+        // Load dark mode state
+        if (localStorage.getItem("darkMode") === "enabled") {
+            widget.classList.add("dark-mode");
+        }
+    
+        toggleButton.addEventListener("click", () => toggleDarkMode(widget));
+        document.addEventListener("mousemove", (event) => adjustButtonVisibility(event, toggleButton));
+    });
+    
+    function createDarkModeToggle() {
         const toggleButton = document.createElement("button");
         toggleButton.id = "dark-mode-toggle";
         toggleButton.textContent = "🌙";
@@ -159,48 +361,20 @@
         toggleButton.style.justifyContent = "center";
         toggleButton.style.fontSize = "18px";
         toggleButton.style.transition = "background 0.3s, color 0.3s";
+        return toggleButton;
+    }
     
-        document.body.appendChild(toggleButton);
+    function toggleDarkMode(widget) {
+        widget.classList.toggle("dark-mode");
+        localStorage.setItem("darkMode", widget.classList.contains("dark-mode") ? "enabled" : "disabled");
+    }
     
-        const widget = document.querySelector(".widget");
+    function adjustButtonVisibility(event, toggleButton) {
+        const buttonRect = toggleButton.getBoundingClientRect();
+        const distance = Math.sqrt(
+            Math.pow(event.clientX - (buttonRect.left + buttonRect.width / 2), 2) +
+            Math.pow(event.clientY - (buttonRect.top + buttonRect.height / 2), 2)
+        );
+        toggleButton.style.opacity = distance < 100 ? "1" : "0";
+    }
     
-        if (!widget) {
-            console.error("Widget not found!");
-            return;
-        }
-    
-        // Load dark mode state
-        if (localStorage.getItem("darkMode") === "enabled") {
-            widget.classList.add("dark-mode");
-        }
-    
-        toggleButton.addEventListener("click", () => {
-            widget.classList.toggle("dark-mode");
-    
-            if (widget.classList.contains("dark-mode")) {
-                localStorage.setItem("darkMode", "enabled");
-            } else {
-                localStorage.setItem("darkMode", "disabled");
-            }
-        });
-        document.addEventListener("mousemove", (event) => {
-            const buttonRect = toggleButton.getBoundingClientRect();
-            const cursorX = event.clientX;
-            const cursorY = event.clientY;
-    
-            const distance = Math.sqrt(
-                Math.pow(cursorX - (buttonRect.left + buttonRect.width / 2), 2) +
-                Math.pow(cursorY - (buttonRect.top + buttonRect.height / 2), 2)
-            );
-    
-            // Show button if cursor is within 100px, hide otherwise
-            if (distance < 100) {
-                toggleButton.style.opacity = "1";
-            } else {
-                toggleButton.style.opacity = "0";
-            }
-        });
-    });
-
-    
-
