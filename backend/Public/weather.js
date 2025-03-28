@@ -211,12 +211,10 @@
         
         console.log("🎉 Loaded weather widget!");
     
-        // Display cached cities if available
         if (savedCities.length > 0) {
             console.log(`📍 Cached cities: ${savedCities.join(", ")}`);
         }
     
-        // Check if we have a saved city and weather data
         if (savedCity) {
             document.getElementById("city-input").value = savedCity.toLowerCase();  // Normalize the city input
             
@@ -231,7 +229,6 @@
         }
     };
     
-    // Function to fetch weather data for a city and display it
     function fetchWeatherByCity(isReload = false) {
         let city = document.getElementById("city-input").value.trim().toLowerCase();  // Normalize city input for consistency
         if (!city) {
@@ -259,7 +256,6 @@
                     return;
                 }
     
-                // Save the city to localStorage (for recent cities list)
                 let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
                 let normalizedCity = city.toLowerCase();
     
@@ -275,16 +271,10 @@
                     console.log(`🔁 Using cached weather data for city: ${city}`);
                 }
     
-                // Save weather data and timestamp to localStorage
                 localStorage.setItem("weatherData", JSON.stringify(data));
                 localStorage.setItem("weatherTimestamp", Date.now());
-    
-                // Update UI with current weather and 7-day forecast
                 updateWeatherUI(data);
-    
-                // Hide any error message
                 hideError();
-    
                 console.log("✅ Weather data fetched successfully:", data);
             })
             .catch(error => {
@@ -293,44 +283,46 @@
             });
     }
     
-    // Update UI with current weather and 7-day forecast
-    function updateWeatherUI(data) {
-        // Update current weather
-        const currentWeather = data.current;
-        const weatherContainer = document.getElementById("weather-container");
-        weatherContainer.innerHTML = `
-            <h2>Current Weather in ${data.location.name}</h2>
-            <p>Temperature: ${currentWeather.temp}°C</p>
-            <p>Humidity: ${currentWeather.humidity}%</p>
-            <p>Condition: ${currentWeather.weather[0].description}</p>
-            <p>Wind: ${currentWeather.wind_speed} km/h</p>
+    
+
+// Update UI with current weather and 7-day forecast
+function updateWeatherUI(data) {
+    // Update current weather
+    const currentWeather = data.current;
+    const weatherContainer = document.getElementById("weather-container");
+    weatherContainer.innerHTML = `
+        <h2>Current Weather in ${data.location.name}</h2>
+        <p>Temperature: ${currentWeather.temp}°C</p>
+        <p>Humidity: ${currentWeather.humidity}%</p>
+        <p>Condition: ${currentWeather.weather[0].description}</p>
+        <p>Wind: ${currentWeather.wind_speed} km/h</p>
+    `;
+    
+    // Update 7-day forecast
+    const forecastContainer = document.getElementById("forecast-container");
+    forecastContainer.innerHTML = "<h3>7-Day Forecast</h3>";
+    
+    data.forecast.forecastday.forEach(day => {
+        const dayElement = document.createElement("div");
+        dayElement.classList.add("forecast-day");
+        dayElement.innerHTML = `
+            <p><strong>${new Date(day.date).toLocaleDateString()}</strong></p>
+            <p>Max Temp: ${day.day.maxtemp_c}°C | Min Temp: ${day.day.mintemp_c}°C</p>
+            <p>Condition: ${day.day.condition.text}</p>
         `;
-        
-        // Update 7-day forecast
-        const forecastContainer = document.getElementById("forecast-container");
-        forecastContainer.innerHTML = "<h3>7-Day Forecast</h3>";
-        
-        data.forecast.forecastday.forEach(day => {
-            const dayElement = document.createElement("div");
-            dayElement.classList.add("forecast-day");
-            dayElement.innerHTML = `
-                <p><strong>${new Date(day.date).toLocaleDateString()}</strong></p>
-                <p>Max Temp: ${day.day.maxtemp_c}°C | Min Temp: ${day.day.mintemp_c}°C</p>
-                <p>Condition: ${day.day.condition.text}</p>
-            `;
-            forecastContainer.appendChild(dayElement);
-        });
-    }
-    
-    // Show an error message if the city is not found or other issues occur
-    function showError(message) {
-        const errorContainer = document.getElementById("error-container");
-        errorContainer.textContent = message;
-        errorContainer.style.display = "block";
-    }
-    
-    // Hide the error message
-    function hideError() {
-        const errorContainer = document.getElementById("error-container");
-        errorContainer.style.display = "none";
-    }
+        forecastContainer.appendChild(dayElement);
+    });
+}
+
+// Show an error message if the city is not found or other issues occur
+function showError(message) {
+    const errorContainer = document.getElementById("error-container");
+    errorContainer.textContent = message;
+    errorContainer.style.display = "block";
+}
+
+// Hide the error message
+function hideError() {
+    const errorContainer = document.getElementById("error-container");
+    errorContainer.style.display = "none";
+}
