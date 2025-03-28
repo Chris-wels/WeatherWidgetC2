@@ -1,7 +1,7 @@
 
-    //  let timer;
-    //  const cacheDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-    //  const maxCities = 5; // Limit of  cities
+     let timer;
+     const cacheDuration = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+     const maxCities = 5; // Limit of  cities
  
     //  window.onload = function() {
     //      const savedCities = JSON.parse(localStorage.getItem("cities")) || [];
