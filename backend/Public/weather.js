@@ -208,25 +208,30 @@
         const savedCity = localStorage.getItem("city");
         const cachedWeather = JSON.parse(localStorage.getItem("weatherData"));
         const cachedTimestamp = localStorage.getItem("weatherTimestamp");
-    
+        
         console.log("🎉 Loaded weather widget!");
     
+        // Display cached cities if available
         if (savedCities.length > 0) {
             console.log(`📍 Cached cities: ${savedCities.join(", ")}`);
         }
     
+        // Check if we have a saved city and weather data
         if (savedCity) {
             document.getElementById("city-input").value = savedCity.toLowerCase();  // Normalize the city input
+            
+            // Check if the cache exists and is still valid
             if (cachedWeather && cachedTimestamp && (Date.now() - cachedTimestamp) < cacheDuration) {
                 console.log("🔄 Using cached weather data...");
-                updateWeatherUI(cachedWeather); // Use the cached data
+                updateWeatherUI(cachedWeather);
             } else {
                 console.log("🔄 Fetching new weather data...");
-                fetchWeatherByCity(true); // Fetch new weather data
+                fetchWeatherByCity(); // Fetch new weather data when the cache is invalid
             }
         }
     };
     
+    // Function to fetch weather data for a city and display it
     function fetchWeatherByCity(isReload = false) {
         let city = document.getElementById("city-input").value.trim().toLowerCase();  // Normalize city input for consistency
         if (!city) {
@@ -239,17 +244,6 @@
     
         localStorage.setItem("city", city);
     
-        // Check if cached data exists and is valid
-        const cachedWeather = JSON.parse(localStorage.getItem("weatherData"));
-        const cachedTimestamp = localStorage.getItem("weatherTimestamp");
-    
-        if (cachedWeather && cachedTimestamp && (Date.now() - cachedTimestamp) < cacheDuration) {
-            console.log("🔄 Using cached weather data...");
-            updateWeatherUI(cachedWeather); // Use cached data without making a request
-            return; // Stop further execution to avoid unnecessary fetch request
-        }
-    
-        // If cached data is not available or is outdated, fetch new data
         fetch(`/api/weather?city=${city}`)
             .then(response => {
                 if (!response.ok) {
@@ -265,7 +259,7 @@
                     return;
                 }
     
-                // Normalize city name for cache comparison
+                // Save the city to localStorage (for recent cities list)
                 let savedCities = JSON.parse(localStorage.getItem("cities")) || [];
                 let normalizedCity = city.toLowerCase();
     
@@ -281,10 +275,16 @@
                     console.log(`🔁 Using cached weather data for city: ${city}`);
                 }
     
+                // Save weather data and timestamp to localStorage
                 localStorage.setItem("weatherData", JSON.stringify(data));
                 localStorage.setItem("weatherTimestamp", Date.now());
+    
+                // Update UI with current weather and 7-day forecast
                 updateWeatherUI(data);
+    
+                // Hide any error message
                 hideError();
+    
                 console.log("✅ Weather data fetched successfully:", data);
             })
             .catch(error => {
@@ -293,54 +293,44 @@
             });
     }
     
+    // Update UI with current weather and 7-day forecast
     function updateWeatherUI(data) {
-        document.getElementById("city-name").textContent = data.location.name;
-        document.getElementById("temperature").textContent = data.current.temp_c;
-        document.getElementById("weather-condition").textContent = data.current.condition.text;
-        document.getElementById("weather-icon").src = `https:${data.current.condition.icon}`;
-    
-        if (timer) clearInterval(timer);
-        updateRealTime(data.location.tz_id);
-        timer = setInterval(() => updateRealTime(data.location.tz_id), 1000); 
-        updateForecastUI(data.forecast.forecastday);
-        document.getElementById("city-input").disabled = true;
-    }
-    
-    function updateRealTime(timezone) {
-        let now = new Date(new Date().toLocaleString("en-US", { timeZone: timezone }));
-        document.getElementById("local-time").textContent = now.toLocaleTimeString("en-US", { hour: 'numeric', minute: 'numeric', second:'numeric', hour12: true });
-        document.getElementById("local-date").textContent = now.toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-    }
-    
-    function updateForecastUI(forecast) {
+        // Update current weather
+        const currentWeather = data.current;
+        const weatherContainer = document.getElementById("weather-container");
+        weatherContainer.innerHTML = `
+            <h2>Current Weather in ${data.location.name}</h2>
+            <p>Temperature: ${currentWeather.temp}°C</p>
+            <p>Humidity: ${currentWeather.humidity}%</p>
+            <p>Condition: ${currentWeather.weather[0].description}</p>
+            <p>Wind: ${currentWeather.wind_speed} km/h</p>
+        `;
+        
+        // Update 7-day forecast
         const forecastContainer = document.getElementById("forecast-container");
-        forecastContainer.innerHTML = "";
-        let today = new Date().getDate();
-        forecast.forEach(day => {
-            let forecastDate = new Date(day.date).getDate();
-            if (forecastDate >= today) {
-                let div = document.createElement("div");
-                div.className = "forecast-day";
-                div.innerHTML = `
-                    <p>${new Date(day.date).toLocaleDateString("en-US", { weekday: 'short' })}</p>
-                    <img src="https:${day.day.condition.icon}" alt="${day.day.condition.text}">
-                    <p>${day.day.avgtemp_c}°C</p>
-                `;
-                forecastContainer.appendChild(div);
-            }
+        forecastContainer.innerHTML = "<h3>7-Day Forecast</h3>";
+        
+        data.forecast.forecastday.forEach(day => {
+            const dayElement = document.createElement("div");
+            dayElement.classList.add("forecast-day");
+            dayElement.innerHTML = `
+                <p><strong>${new Date(day.date).toLocaleDateString()}</strong></p>
+                <p>Max Temp: ${day.day.maxtemp_c}°C | Min Temp: ${day.day.mintemp_c}°C</p>
+                <p>Condition: ${day.day.condition.text}</p>
+            `;
+            forecastContainer.appendChild(dayElement);
         });
     }
     
-    function enableEdit() {
-        document.getElementById("city-input").disabled = false;
-        hideError();
-    }
-    
+    // Show an error message if the city is not found or other issues occur
     function showError(message) {
-        document.getElementById("error-container").textContent = message;
+        const errorContainer = document.getElementById("error-container");
+        errorContainer.textContent = message;
+        errorContainer.style.display = "block";
     }
     
+    // Hide the error message
     function hideError() {
-        document.getElementById("error-container").textContent = "";
+        const errorContainer = document.getElementById("error-container");
+        errorContainer.style.display = "none";
     }
-    
