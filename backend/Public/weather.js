@@ -97,8 +97,12 @@ function fetchWeatherByCity(isReload = false) {
 
 function updateWeatherUI(data) {
     document.getElementById("city-name").textContent = formatCityName(data.address);
-    document.getElementById("temperature").textContent = data.currentConditions.temp.toFixed(1);
-    document.getElementById("temp-unit").textContent = "°F"; // Default to Fahrenheit
+    originalCurrentTempF = data.currentConditions.temp;
+    let isCelsius = localStorage.getItem("isCelsius") === "true";
+    let displayTemp = isCelsius ? ((originalCurrentTempF - 32) * 5 / 9).toFixed(1) : originalCurrentTempF.toFixed(1);
+    document.getElementById("temperature").textContent = displayTemp;
+    document.getElementById("temp-unit").textContent = isCelsius ? "°C" : "°F";
+        document.getElementById("temp-unit").textContent = "°F"; // Default to Fahrenheit
     document.getElementById("weather-condition").textContent = data.currentConditions.conditions;
     document.getElementById("weather-icon").src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/1st%20Set%20-%20Color/${data.currentConditions.icon}.png`;
 
@@ -120,18 +124,55 @@ function updateRealTime(timezone) {
     document.getElementById("local-date").textContent = now.toLocaleDateString("en-US", { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 }
 
+// function updateForecastUI(forecast) {
+//     const forecastContainer = document.getElementById("forecast-container");
+//     forecastContainer.innerHTML = "";
+//     forecast.slice(1, 6).forEach(day => {
+//         let div = document.createElement("div");
+//         div.className = "forecast-day";
+//         div.innerHTML = `
+//             <p>${new Date(day.datetime).toLocaleDateString("en-US", { weekday: 'short' })}</p>
+//             <img src="https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/1st%20Set%20-%20Color/${day.icon}.png" alt="${day.conditions}">
+//             <p>${day.temp}°F</p>
+//         `;
+//         forecastContainer.appendChild(div);
+//     });
+// }
+
+
 function updateForecastUI(forecast) {
     const forecastContainer = document.getElementById("forecast-container");
     forecastContainer.innerHTML = "";
+
     forecast.slice(1, 6).forEach(day => {
         let div = document.createElement("div");
         div.className = "forecast-day";
         div.innerHTML = `
             <p>${new Date(day.datetime).toLocaleDateString("en-US", { weekday: 'short' })}</p>
             <img src="https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/1st%20Set%20-%20Color/${day.icon}.png" alt="${day.conditions}">
-            <p>${day.temp}°F</p>
+            <p class="forecast-temp" data-temp-f="${day.temp}" data-temp-c="${((day.temp - 32) * 5 / 9).toFixed(1)}">${day.temp}°F</p>
         `;
         forecastContainer.appendChild(div);
+    });
+
+    // Sync forecast units with selected preference
+    if (localStorage.getItem("isCelsius") === "true") {
+        convertForecastToCelsius();
+    } else {
+        convertForecastToFahrenheit();
+    }
+}
+
+
+function convertForecastToCelsius() {
+    document.querySelectorAll(".forecast-temp").forEach(el => {
+        el.textContent = `${el.dataset.tempC}°C`;
+    });
+}
+
+function convertForecastToFahrenheit() {
+    document.querySelectorAll(".forecast-temp").forEach(el => {
+        el.textContent = `${el.dataset.tempF}°F`;
     });
 }
 
@@ -216,25 +257,48 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 //Converts Farenheit to Celcius Vice Versa
-document.getElementById("temp-unit").addEventListener("click", () => {
-    let tempElement = document.getElementById("temperature");
-    let tempUnit = document.getElementById("temp-unit");
+// document.getElementById("temp-unit").addEventListener("click", () => {
+//     let tempElement = document.getElementById("temperature");
+//     let tempUnit = document.getElementById("temp-unit");
 
-    let currentTemp = parseFloat(tempElement.textContent);
+//     let currentTemp = parseFloat(tempElement.textContent);
+//     let isCelsius = localStorage.getItem("isCelsius") === "true";
+
+//     if (isCelsius) {
+//         // Convert to Fahrenheit
+//         tempElement.textContent = ((currentTemp * 9) / 5 + 32).toFixed(1);
+//         tempUnit.textContent = "°F";
+//         localStorage.setItem("isCelsius", "false");
+//     } else {
+//         // Convert to Celsius
+//         tempElement.textContent = ((currentTemp - 32) * 5 / 9).toFixed(1);
+//         tempUnit.textContent = "°C";
+//         localStorage.setItem("isCelsius", "true");
+//     }
+// });
+
+document.getElementById("temp-unit").addEventListener("click", () => {
     let isCelsius = localStorage.getItem("isCelsius") === "true";
 
-    if (isCelsius) {
-        // Convert to Fahrenheit
-        tempElement.textContent = ((currentTemp * 9) / 5 + 32).toFixed(1);
-        tempUnit.textContent = "°F";
-        localStorage.setItem("isCelsius", "false");
-    } else {
-        // Convert to Celsius
-        tempElement.textContent = ((currentTemp - 32) * 5 / 9).toFixed(1);
-        tempUnit.textContent = "°C";
-        localStorage.setItem("isCelsius", "true");
-    }
+    isCelsius = !isCelsius;
+    localStorage.setItem("isCelsius", isCelsius.toString());
+
+    // Update current temperature
+    const tempElement = document.getElementById("temperature");
+    const tempUnit = document.getElementById("temp-unit");
+
+    const displayTemp = isCelsius
+        ? ((originalCurrentTempF - 32) * 5 / 9).toFixed(1)
+        : originalCurrentTempF.toFixed(1);
+
+    tempElement.textContent = displayTemp;
+    tempUnit.textContent = isCelsius ? "°C" : "°F";
+
+    // Also update forecast
+    const forecast = JSON.parse(localStorage.getItem("weatherData"))?.[localStorage.getItem("city")]?.days;
+    if (forecast) updateForecastUI(forecast);
 });
+
 
 
 
